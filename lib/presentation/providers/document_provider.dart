@@ -16,28 +16,43 @@ final syncServiceProvider = Provider<SyncService>((ref) {
 class DocumentListNotifier extends Notifier<List<Document>> {
   @override
   List<Document> build() {
+    print('DEBUG: DocumentListNotifier build()');
     _loadDocuments();
     return [];
   }
 
   Future<void> _loadDocuments() async {
-    final repository = ref.read(documentRepositoryProvider);
-    state = await repository.getAllDocuments();
+    print('DEBUG: _loadDocuments() started');
+    try {
+      final repository = ref.read(documentRepositoryProvider);
+      final docs = await repository.getAllDocuments();
+      print('DEBUG: Found ${docs.length} documents in DB');
+      state = docs;
+    } catch (e) {
+      print('DEBUG: Error loading documents: $e');
+    }
   }
 
   Future<void> addDocument(String name, List<String> imagePaths) async {
-    final repository = ref.read(documentRepositoryProvider);
-    final document = Document(
-      id: const Uuid().v4(),
-      name: name,
-      imagePaths: imagePaths,
-      createdAt: DateTime.now(),
-    );
-    await repository.saveDocument(document);
-    await _loadDocuments();
+    print('DEBUG: addDocument() triggered for: $name');
+    try {
+      final repository = ref.read(documentRepositoryProvider);
+      final document = Document(
+        id: const Uuid().v4(),
+        name: name,
+        imagePaths: imagePaths,
+        createdAt: DateTime.now(),
+      );
+      print('DEBUG: Saving document ${document.id} to repository...');
+      await repository.saveDocument(document);
+      print('DEBUG: Document saved. Refreshing list...');
+      await _loadDocuments();
 
-    // Auto-sync attempt (can be moved to a background worker later)
-    await syncDocument(document.id);
+      // Auto-sync attempt
+      syncDocument(document.id);
+    } catch (e) {
+      print('DEBUG: Error adding document: $e');
+    }
   }
 
   Future<void> deleteDocument(String id) async {
@@ -47,6 +62,7 @@ class DocumentListNotifier extends Notifier<List<Document>> {
   }
 
   Future<void> syncDocument(String id) async {
+    print('DEBUG: syncDocument() for $id');
     final syncService = ref.read(syncServiceProvider);
     final repository = ref.read(documentRepositoryProvider);
 
@@ -56,18 +72,24 @@ class DocumentListNotifier extends Notifier<List<Document>> {
     final doc = state[docIndex];
     if (doc.isSynced) return;
 
-    // Default to Google Drive for now, unless iOS
-    final provider = SyncProvider.googleDrive; // Should be dynamic in Phase 6
+    final provider = SyncProvider.googleDrive;
 
-    final syncedDoc = await syncService.syncDocument(doc, provider);
-    if (syncedDoc != null) {
-      await repository.updateDocument(syncedDoc);
-      await _loadDocuments();
+    try {
+      final syncedDoc = await syncService.syncDocument(doc, provider);
+      if (syncedDoc != null) {
+        print('DEBUG: Sync success for $id');
+        await repository.updateDocument(syncedDoc);
+        await _loadDocuments();
+      } else {
+        print('DEBUG: Sync returned null for $id');
+      }
+    } catch (e) {
+      print('DEBUG: Sync error for $id: $e');
     }
   }
 }
 
-final documentListProvider =
-    NotifierProvider<DocumentListNotifier, List<Document>>(() {
-      return DocumentListNotifier();
-    });
+final documentListProvider = NotifierProvider<DocumentListNotifier, List<Document>>(() {
+  return DocumentListNotifier();
+});
+

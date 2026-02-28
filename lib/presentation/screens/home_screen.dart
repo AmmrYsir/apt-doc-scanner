@@ -139,13 +139,19 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Future<void> _startScan(BuildContext context, WidgetRef ref) async {
+    print('DEBUG: HomeScreen _startScan() triggered');
     final images = await ref.read(scannerProvider.notifier).scanDocument();
+    print('DEBUG: HomeScreen received images: ${images?.length ?? 0}');
     if (images != null && images.isNotEmpty) {
       final name = 'Document ${DateTime.now().millisecondsSinceEpoch}';
+      print('DEBUG: Requesting addDocument for: $name');
       await ref.read(documentListProvider.notifier).addDocument(name, images);
+      print('DEBUG: addDocument call finished in HomeScreen');
       if (context.mounted) {
         _showScanSuccess(context, images.length);
       }
+    } else {
+      print('DEBUG: No images returned from scanner.');
     }
   }
 
