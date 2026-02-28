@@ -9,8 +9,8 @@
 - [x] Update the description of the package in the `pubspec.yaml` and set the version number to 0.1.0.
 - [x] Update the README.md to include a short placeholder description of the package.
 - [x] Create the CHANGELOG.md to have the initial version of 0.1.0.
-- [ ] Commit this empty version of the package to the `feature/doc-scanner-init` branch.
-- [ ] After committing the change, start running the app with the launch_app tool on the user's preferred device.
+- [x] Commit this empty version of the package to the `feature/doc-scanner-init` branch.
+- [x] After committing the change, start running the app with the launch_app tool on the user's preferred device.
 
 **Post-Phase Tasks:**
 - [ ] Create/modify unit tests for testing the code added or modified in this phase, if relevant.
