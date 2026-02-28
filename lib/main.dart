@@ -1,19 +1,23 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const DocScannerApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class DocScannerApp extends StatelessWidget {
+  const DocScannerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return const CupertinoApp(
+      title: 'APT Doc Scanner',
+      theme: CupertinoThemeData(
+        brightness: Brightness.light,
+        primaryColor: CupertinoColors.systemBlue,
+      ),
+      home: CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(middle: Text('APT Doc Scanner')),
+        child: Center(child: Text('Premium Scanner Initialization...')),
       ),
     );
   }

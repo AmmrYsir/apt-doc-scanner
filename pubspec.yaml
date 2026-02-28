@@ -1,7 +1,7 @@
 name: apt_doc_scanner
-description: "A new Flutter project."
+description: "A premium document scanner app with Google Drive and iCloud sync, featuring a custom modern UI."
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.1.0
 
 environment:
   sdk: ^3.11.0
@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.8
 
 dev_dependencies:
   flutter_test:
@@ -16,4 +17,4 @@ dev_dependencies:
   flutter_lints: ^6.0.0
 
 flutter:
-  uses-material-design: true
+  uses-material-design: false

@@ -18,8 +18,8 @@ Key requirements include:
 3. **`flutter_doc_scanner` (Selected):** A unified bridge that uses Google's ML Kit on Android and Apple's VisionKit on iOS. This provides the best native experience on both platforms with minimal binary size overhead.
 
 ### Storage & Sync
-1. **Firebase Storage:** Easier to set up but less accessible for users who want to see their files in their own Google Drive.
-2. **Google Drive API (Selected):** Direct integration allows users to own their data. Using `appDataFolder` ensures app-specific data is kept separate from general Drive files.
+1. **Firebase Storage:** Easier to set up but less accessible for users who want to see their files in their own Google Drive or iCloud.
+2. **Google Drive API & iCloud (Selected):** Direct integration allows users to own their data. For Android (and cross-platform), Google Drive will be used. For iOS, we will provide an option to integrate natively with iCloud. Using `appDataFolder` ensures app-specific data is kept separate from general files.
 
 ## Detailed Design
 
@@ -52,9 +52,10 @@ graph TD
 3. **Sync:** Sync Service detects new/updated file -> Authenticates via Google Sign-In -> Uploads to `appDataFolder` on Google Drive.
 
 ### UI/UX Design
-- **Theme:** Material 3 with a custom seed color.
-- **Motion:** Use `animations` package for shared element transitions (Hero) and `AnimatedList` for document views.
-- **Interactive:** Haptic feedback on capture and real-time upload progress indicators.
+- **Theme:** Custom Design System (Non-Material). The app will leverage `Cupertino` widgets for iOS-native feel where appropriate, but primarily focus on **Custom Components** to create a unique, modern aesthetic.
+- **Visuals:** High-contrast typography, custom glassmorphism effects, and bespoke iconography.
+- **Motion:** Use `animations` package and custom `ImplicitlyAnimatedWidget`s for fluid, non-linear transitions. Shared element transitions (Hero) will be used for document previews.
+- **Interactive:** Haptic feedback on capture and real-time upload progress indicators with custom circular/linear progress designs.
 
 ## Summary
 APT Doc Scanner leverages native platform capabilities (ML Kit and VisionKit) to provide a professional scanning experience. By integrating Google Drive, it ensures data longevity and accessibility, all wrapped in a modern Flutter-based interface.
