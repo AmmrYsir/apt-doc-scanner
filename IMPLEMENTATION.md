@@ -3,6 +3,7 @@
 ## Journal
 - **2026-02-28**: Initialized Phase 1. Updated `pubspec.yaml` to remove Material Design and set version to 0.1.0. Replaced boilerplate `lib/main.dart` with a minimal `CupertinoApp`. Updated `README.md` and created `CHANGELOG.md`. Ran `dart format` and `analyze_files` - no issues found.
 - **2026-02-28**: Completed Phase 2. Added dependencies (`flutter_doc_scanner`, `google_sign_in`, etc.). Set up Clean Architecture folder structure. Implemented Custom Design System (`AppColors`, `AppTextStyles`, `AppScaffold`, `AppNavigationBar`) using Cupertino. Configured `go_router` with placeholder screens. Fixed a deprecation issue with `withOpacity`.
+- **2026-02-28**: Completed Phase 3. Implemented `Document` model. Created `ScannerRepository` and its implementation using `flutter_doc_scanner`. Set up `ScannerNotifier` using Riverpod `Notifier`. Updated `HomeScreen` to trigger document scanning and display a success dialog. Verified with `analyze_files`.
 
 ## Phase 1: Initial Setup
 - [x] Create a Flutter package in the package directory. (Project already exists, but we will ensure structure is correct).
@@ -37,9 +38,9 @@
 **Post-Phase Tasks:** (Same as Phase 1)
 
 ## Phase 3: Document Scanner Integration
-- [ ] Implement the `ScannerRepository` in the data layer using `flutter_doc_scanner`.
-- [ ] Create the Document model class to hold metadata (file path, scan date, sync status).
-- [ ] Build the UI to trigger the scanner and display the resulting images/PDFs in a modern grid or list using animations.
+- [x] Implement the `ScannerRepository` in the data layer using `flutter_doc_scanner`.
+- [x] Create the Document model class to hold metadata (file path, scan date, sync status).
+- [x] Build the UI to trigger the scanner and display the resulting images/PDFs in a modern grid or list using animations.
 
 **Post-Phase Tasks:** (Same as Phase 1)
 
