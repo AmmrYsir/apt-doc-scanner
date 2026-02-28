@@ -7,6 +7,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:878932300435:android:d55a831e56cec42d2ab366",
+        "android_client_info": {
+          "package_name": "com.ammar.apt_doc_scanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGX9csyjOK7yd_ZWWWaJSvdp1dA8w-g-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:878932300435:android:c9b0f8008721fc5c2ab366",
         "android_client_info": {
           "package_name": "com.example.apt_doc_scanner"
