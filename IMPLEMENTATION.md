@@ -6,6 +6,7 @@
 - **2026-02-28**: Completed Phase 3. Implemented `Document` model. Created `ScannerRepository` and its implementation using `flutter_doc_scanner`. Set up `ScannerNotifier` using Riverpod `Notifier`. Updated `HomeScreen` to trigger document scanning and display a success dialog. Verified with `analyze_files`.
 - **2026-02-28**: Completed Phase 4. Implemented `LocalDatabase` using `sqflite`. Created `DocumentRepository` and its implementation. Set up `DocumentListNotifier` to manage local persistence. Updated `HomeScreen` to display the list of scanned documents with previews and persist new scans.
 - **2026-02-28**: Completed Phase 5. Implemented `GoogleDriveService` and `ICloudService`. Integrated `SyncService` into `DocumentListNotifier` for automatic cloud backup after scanning. Resolved `google_sign_in` 7.2.0 API compatibility issues.
+- **2026-02-28**: Completed Phase 6. Implemented `UserNotifier` for authentication state. Developed a premium `ProfileScreen` with account management, cloud sync toggles, and version info using a custom non-Material design.
 
 ## Phase 1: Initial Setup
 - [x] Create a Flutter package in the package directory. (Project already exists, but we will ensure structure is correct).
@@ -61,10 +62,10 @@
 **Post-Phase Tasks:** (Same as Phase 1)
 
 ## Phase 6: Profile & Settings UI
-- [ ] Create the Profile Page UI.
-- [ ] Add settings for Cloud Sync (Toggle Google Drive / iCloud, Auto-sync options).
-- [ ] Implement User Authentication UI (Google Sign-In button).
-- [ ] Add smooth transitions between the main scanner view and the profile view.
+- [x] Create the Profile Page UI.
+- [x] Add settings for Cloud Sync (Toggle Google Drive / iCloud, Auto-sync options).
+- [x] Implement User Authentication UI (Google Sign-In button).
+- [x] Add smooth transitions between the main scanner view and the profile view.
 
 **Post-Phase Tasks:** (Same as Phase 1)
 

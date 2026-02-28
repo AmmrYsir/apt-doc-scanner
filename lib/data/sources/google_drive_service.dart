@@ -15,11 +15,11 @@ class GoogleDriveService {
       final account = await _googleSignIn.authenticate(
         scopeHint: [drive.DriveApi.driveAppdataScope],
       );
-      
-      final authHeaders = await account.authorizationClient.authorizationHeaders(
-        [drive.DriveApi.driveAppdataScope],
-        promptIfNecessary: true,
-      );
+
+      final authHeaders = await account.authorizationClient
+          .authorizationHeaders([
+            drive.DriveApi.driveAppdataScope,
+          ], promptIfNecessary: true);
 
       if (authHeaders == null) return null;
 
