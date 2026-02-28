@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:developer' as developer;
+import 'package:googleapis/drive/v3.dart' as drive;
 
 class UserState {
   final GoogleSignInAccount? googleAccount;
@@ -19,20 +20,27 @@ class UserState {
 }
 
 class UserNotifier extends Notifier<UserState> {
+  static const String _serverClientId =
+      '495963136299-oi3l56pme12ensmet9rq4qis6u8r4eug.apps.googleusercontent.com';
+
+  late final GoogleSignIn _googleSignIn;
+
   @override
   UserState build() {
-    _init();
+    _googleSignIn = GoogleSignIn(
+      serverClientId: _serverClientId,
+      scopes: [drive.DriveApi.driveAppdataScope],
+    );
+    Future.microtask(() => _init());
     return UserState();
   }
 
   Future<void> _init() async {
     print('DEBUG: UserNotifier _init()');
     try {
-      final googleSignIn = GoogleSignIn.instance;
-      await googleSignIn.initialize();
-      final account = await googleSignIn.attemptLightweightAuthentication();
+      final account = await _googleSignIn.signInSilently();
       if (account != null) {
-        print('DEBUG: Found lightweight account: ${account.email}');
+        print('DEBUG: Found existing account: ${account.email}');
         state = state.copyWith(googleAccount: account);
       } else {
         print('DEBUG: No existing account found.');
@@ -46,11 +54,14 @@ class UserNotifier extends Notifier<UserState> {
     print('DEBUG: signIn() triggered');
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final googleSignIn = GoogleSignIn.instance;
-      print('DEBUG: Calling authenticate()...');
-      final account = await googleSignIn.authenticate();
-      print('DEBUG: Sign in success: ${account?.email}');
-      state = state.copyWith(googleAccount: account, isLoading: false);
+      final account = await _googleSignIn.signIn();
+      if (account != null) {
+        print('DEBUG: Sign in success: ${account.email}');
+        state = state.copyWith(googleAccount: account, isLoading: false);
+      } else {
+        print('DEBUG: Sign in returned null (cancelled?)');
+        state = state.copyWith(isLoading: false);
+      }
     } catch (e) {
       print('DEBUG: Sign in error: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
@@ -60,10 +71,10 @@ class UserNotifier extends Notifier<UserState> {
   Future<void> signOut() async {
     state = state.copyWith(isLoading: true);
     try {
-      await GoogleSignIn.instance.signOut();
+      await _googleSignIn.signOut();
       state = UserState();
     } catch (e) {
-      developer.log('Sign out error: $e');
+      print('DEBUG: Sign out error: $e');
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }

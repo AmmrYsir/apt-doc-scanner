@@ -65,9 +65,25 @@ class HomeScreen extends ConsumerWidget {
             child: const Text('Start Scanning'),
             onPressed: () => _startScan(context, ref),
           ),
+          const SizedBox(height: 16),
+          CupertinoButton(
+            child: const Text('Mock Scan (Emulator Only)'),
+            onPressed: () => _mockScan(context, ref),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> _mockScan(BuildContext context, WidgetRef ref) async {
+    print('DEBUG: Mock scan triggered');
+    // We'll create a dummy document. Since we don't have a real image file,
+    // we'll just use a placeholder path string.
+    final name = 'Mock Document ${DateTime.now().millisecondsSinceEpoch}';
+    await ref.read(documentListProvider.notifier).addDocument(name, ['/mock/path/image.jpg']);
+    if (context.mounted) {
+      _showScanSuccess(context, 1);
+    }
   }
 
   Widget _buildDocumentList(
