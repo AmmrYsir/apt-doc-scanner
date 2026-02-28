@@ -5,6 +5,7 @@
 - **2026-02-28**: Completed Phase 2. Added dependencies (`flutter_doc_scanner`, `google_sign_in`, etc.). Set up Clean Architecture folder structure. Implemented Custom Design System (`AppColors`, `AppTextStyles`, `AppScaffold`, `AppNavigationBar`) using Cupertino. Configured `go_router` with placeholder screens. Fixed a deprecation issue with `withOpacity`.
 - **2026-02-28**: Completed Phase 3. Implemented `Document` model. Created `ScannerRepository` and its implementation using `flutter_doc_scanner`. Set up `ScannerNotifier` using Riverpod `Notifier`. Updated `HomeScreen` to trigger document scanning and display a success dialog. Verified with `analyze_files`.
 - **2026-02-28**: Completed Phase 4. Implemented `LocalDatabase` using `sqflite`. Created `DocumentRepository` and its implementation. Set up `DocumentListNotifier` to manage local persistence. Updated `HomeScreen` to display the list of scanned documents with previews and persist new scans.
+- **2026-02-28**: Completed Phase 5. Implemented `GoogleDriveService` and `ICloudService`. Integrated `SyncService` into `DocumentListNotifier` for automatic cloud backup after scanning. Resolved `google_sign_in` 7.2.0 API compatibility issues.
 
 ## Phase 1: Initial Setup
 - [x] Create a Flutter package in the package directory. (Project already exists, but we will ensure structure is correct).
@@ -53,9 +54,9 @@
 **Post-Phase Tasks:** (Same as Phase 1)
 
 ## Phase 5: Cloud Synchronization (Google Drive & iCloud)
-- [ ] Implement `GoogleAuthClient` and Drive API integration for Google Drive sync.
-- [ ] Investigate and implement basic iCloud synchronization for iOS users (using packages like `icloud_storage`).
-- [ ] Create a `SyncService` that monitors local changes and pushes them to the appropriate cloud provider based on user settings/platform.
+- [x] Implement `GoogleAuthClient` and Drive API integration for Google Drive sync.
+- [x] Investigate and implement basic iCloud synchronization for iOS users (using packages like `icloud_storage`).
+- [x] Create a `SyncService` that monitors local changes and pushes them to the appropriate cloud provider based on user settings/platform.
 
 **Post-Phase Tasks:** (Same as Phase 1)
 

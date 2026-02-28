@@ -2,10 +2,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/models/document.dart';
 import '../../domain/repositories/document_repository.dart';
 import '../../data/repositories/document_repository_impl.dart';
+import '../../data/sources/sync_service.dart';
 import 'package:uuid/uuid.dart';
 
 final documentRepositoryProvider = Provider<DocumentRepository>((ref) {
   return DocumentRepositoryImpl();
+});
+
+final syncServiceProvider = Provider<SyncService>((ref) {
+  return SyncService();
 });
 
 class DocumentListNotifier extends Notifier<List<Document>> {
@@ -30,12 +35,35 @@ class DocumentListNotifier extends Notifier<List<Document>> {
     );
     await repository.saveDocument(document);
     await _loadDocuments();
+
+    // Auto-sync attempt (can be moved to a background worker later)
+    await syncDocument(document.id);
   }
 
   Future<void> deleteDocument(String id) async {
     final repository = ref.read(documentRepositoryProvider);
     await repository.deleteDocument(id);
     await _loadDocuments();
+  }
+
+  Future<void> syncDocument(String id) async {
+    final syncService = ref.read(syncServiceProvider);
+    final repository = ref.read(documentRepositoryProvider);
+
+    final docIndex = state.indexWhere((d) => d.id == id);
+    if (docIndex == -1) return;
+
+    final doc = state[docIndex];
+    if (doc.isSynced) return;
+
+    // Default to Google Drive for now, unless iOS
+    final provider = SyncProvider.googleDrive; // Should be dynamic in Phase 6
+
+    final syncedDoc = await syncService.syncDocument(doc, provider);
+    if (syncedDoc != null) {
+      await repository.updateDocument(syncedDoc);
+      await _loadDocuments();
+    }
   }
 }
 
