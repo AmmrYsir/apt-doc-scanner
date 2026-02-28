@@ -5,7 +5,9 @@ import '../widgets/app_navigation_bar.dart';
 import '../theme/app_text_styles.dart';
 import '../theme/app_colors.dart';
 import '../providers/scanner_provider.dart';
+import '../providers/document_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'dart:io';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -13,6 +15,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scannerState = ref.watch(scannerProvider);
+    final documents = ref.watch(documentListProvider);
 
     return AppScaffold(
       navigationBar: AppNavigationBar(
@@ -25,7 +28,9 @@ class HomeScreen extends ConsumerWidget {
       ),
       child: Stack(
         children: [
-          _buildContent(context, ref),
+          documents.isEmpty
+              ? _buildEmptyState(context, ref)
+              : _buildDocumentList(context, ref, documents),
           if (scannerState.isScanning)
             Container(
               color: CupertinoColors.black.withValues(alpha: 0.3),
@@ -38,7 +43,7 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref) {
+  Widget _buildEmptyState(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -49,10 +54,7 @@ class HomeScreen extends ConsumerWidget {
             color: AppColors.textSecondary,
           ),
           const SizedBox(height: 24),
-          const Text(
-            'No Documents Yet',
-            style: AppTextStyles.titleMedium,
-          ),
+          const Text('No Documents Yet', style: AppTextStyles.titleMedium),
           const SizedBox(height: 8),
           const Text(
             'Tap the scan button to start digitizing',
@@ -61,19 +63,90 @@ class HomeScreen extends ConsumerWidget {
           const SizedBox(height: 40),
           CupertinoButton.filled(
             child: const Text('Start Scanning'),
-            onPressed: () async {
-              final images =
-                  await ref.read(scannerProvider.notifier).scanDocument();
-              if (images != null && images.isNotEmpty) {
-                if (context.mounted) {
-                  _showScanSuccess(context, images.length);
-                }
-              }
-            },
+            onPressed: () => _startScan(context, ref),
           ),
         ],
       ),
     );
+  }
+
+  Widget _buildDocumentList(
+    BuildContext context,
+    WidgetRef ref,
+    List<dynamic> documents,
+  ) {
+    return Column(
+      children: [
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.all(16),
+            itemCount: documents.length,
+            itemBuilder: (context, index) {
+              final doc = documents[index];
+              return Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: CupertinoColors.secondarySystemBackground,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 60,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: CupertinoColors.inactiveGray,
+                        borderRadius: BorderRadius.circular(8),
+                        image: doc.imagePaths.isNotEmpty
+                            ? DecorationImage(
+                                image: FileImage(File(doc.imagePaths.first)),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(doc.name, style: AppTextStyles.bodyLarge),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Scanned on ${doc.createdAt.toString().split(' ')[0]}',
+                            style: AppTextStyles.caption,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(CupertinoIcons.chevron_right, size: 16),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: CupertinoButton.filled(
+            child: const Text('Scan New Document'),
+            onPressed: () => _startScan(context, ref),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _startScan(BuildContext context, WidgetRef ref) async {
+    final images = await ref.read(scannerProvider.notifier).scanDocument();
+    if (images != null && images.isNotEmpty) {
+      final name = 'Document ${DateTime.now().millisecondsSinceEpoch}';
+      await ref.read(documentListProvider.notifier).addDocument(name, images);
+      if (context.mounted) {
+        _showScanSuccess(context, images.length);
+      }
+    }
   }
 
   void _showScanSuccess(BuildContext context, int count) {

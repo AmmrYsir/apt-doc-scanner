@@ -4,6 +4,7 @@
 - **2026-02-28**: Initialized Phase 1. Updated `pubspec.yaml` to remove Material Design and set version to 0.1.0. Replaced boilerplate `lib/main.dart` with a minimal `CupertinoApp`. Updated `README.md` and created `CHANGELOG.md`. Ran `dart format` and `analyze_files` - no issues found.
 - **2026-02-28**: Completed Phase 2. Added dependencies (`flutter_doc_scanner`, `google_sign_in`, etc.). Set up Clean Architecture folder structure. Implemented Custom Design System (`AppColors`, `AppTextStyles`, `AppScaffold`, `AppNavigationBar`) using Cupertino. Configured `go_router` with placeholder screens. Fixed a deprecation issue with `withOpacity`.
 - **2026-02-28**: Completed Phase 3. Implemented `Document` model. Created `ScannerRepository` and its implementation using `flutter_doc_scanner`. Set up `ScannerNotifier` using Riverpod `Notifier`. Updated `HomeScreen` to trigger document scanning and display a success dialog. Verified with `analyze_files`.
+- **2026-02-28**: Completed Phase 4. Implemented `LocalDatabase` using `sqflite`. Created `DocumentRepository` and its implementation. Set up `DocumentListNotifier` to manage local persistence. Updated `HomeScreen` to display the list of scanned documents with previews and persist new scans.
 
 ## Phase 1: Initial Setup
 - [x] Create a Flutter package in the package directory. (Project already exists, but we will ensure structure is correct).
@@ -45,9 +46,9 @@
 **Post-Phase Tasks:** (Same as Phase 1)
 
 ## Phase 4: Local Storage & Data Management
-- [ ] Set up local SQLite database using `sqflite` to store document metadata.
-- [ ] Create `LocalDatabaseRepository` to handle CRUD operations for documents.
-- [ ] Connect the Scanner UI to save documents locally immediately after scanning.
+- [x] Set up local SQLite database using `sqflite` to store document metadata.
+- [x] Create `LocalDatabaseRepository` to handle CRUD operations for documents.
+- [x] Connect the Scanner UI to save documents locally immediately after scanning.
 
 **Post-Phase Tasks:** (Same as Phase 1)
 
