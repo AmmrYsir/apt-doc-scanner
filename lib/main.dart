@@ -4,7 +4,12 @@ import 'core/router.dart';
 import 'presentation/theme/app_colors.dart';
 
 void main() {
-  runApp(const ProviderScope(child: DocScannerApp()));
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    const ProviderScope(
+      child: DocScannerApp(),
+    ),
+  );
 }
 
 class DocScannerApp extends StatelessWidget {
