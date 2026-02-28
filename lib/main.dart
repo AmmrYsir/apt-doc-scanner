@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/router.dart';
+import 'presentation/theme/app_colors.dart';
 
 void main() {
-  runApp(const DocScannerApp());
+  runApp(const ProviderScope(child: DocScannerApp()));
 }
 
 class DocScannerApp extends StatelessWidget {
@@ -9,16 +12,15 @@ class DocScannerApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CupertinoApp(
+    return CupertinoApp.router(
       title: 'APT Doc Scanner',
-      theme: CupertinoThemeData(
+      theme: const CupertinoThemeData(
         brightness: Brightness.light,
-        primaryColor: CupertinoColors.systemBlue,
+        primaryColor: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.background,
       ),
-      home: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(middle: Text('APT Doc Scanner')),
-        child: Center(child: Text('Premium Scanner Initialization...')),
-      ),
+      routerConfig: appRouter,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

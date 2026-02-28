@@ -2,6 +2,7 @@
 
 ## Journal
 - **2026-02-28**: Initialized Phase 1. Updated `pubspec.yaml` to remove Material Design and set version to 0.1.0. Replaced boilerplate `lib/main.dart` with a minimal `CupertinoApp`. Updated `README.md` and created `CHANGELOG.md`. Ran `dart format` and `analyze_files` - no issues found.
+- **2026-02-28**: Completed Phase 2. Added dependencies (`flutter_doc_scanner`, `google_sign_in`, etc.). Set up Clean Architecture folder structure. Implemented Custom Design System (`AppColors`, `AppTextStyles`, `AppScaffold`, `AppNavigationBar`) using Cupertino. Configured `go_router` with placeholder screens. Fixed a deprecation issue with `withOpacity`.
 
 ## Phase 1: Initial Setup
 - [x] Create a Flutter package in the package directory. (Project already exists, but we will ensure structure is correct).
@@ -25,13 +26,13 @@
 - [ ] After commiting the change, if the app is running, use the hot_reload tool to reload it.
 
 ## Phase 2: Core Architecture & Custom Design System
-- [ ] Add base dependencies to `pubspec.yaml` (e.g., `flutter_doc_scanner`, `google_sign_in`, `googleapis`, `path_provider`, `sqflite`, `animations`, `go_router`, `flutter_riverpod` or `provider`).
-- [ ] Set up the folder structure (`lib/presentation`, `lib/domain`, `lib/data`, `lib/core`).
-- [ ] Implement a **Custom Design System**:
+- [x] Add base dependencies to `pubspec.yaml` (e.g., `flutter_doc_scanner`, `google_sign_in`, `googleapis`, `path_provider`, `sqflite`, `animations`, `go_router`, `flutter_riverpod` or `provider`).
+- [x] Set up the folder structure (`lib/presentation`, `lib/domain`, `lib/data`, `lib/core`).
+- [x] Implement a **Custom Design System**:
     - Define a `AppColors` class with custom HEX values (no Material palettes).
     - Define a `AppTextStyles` class for consistent typography.
     - Create base custom layout components (e.g., `AppScaffold`, `AppNavigationBar`) using `Cupertino` and `Stack`/`Container`.
-- [ ] Create routing setup using `go_router` with `CupertinoPage` transitions.
+- [x] Create routing setup using `go_router` with `CupertinoPage` transitions.
 
 **Post-Phase Tasks:** (Same as Phase 1)
 
